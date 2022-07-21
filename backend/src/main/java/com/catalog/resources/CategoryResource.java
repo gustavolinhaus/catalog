@@ -1,11 +1,12 @@
 package com.catalog.resources;
 
-import com.catalog.entities.Category;
+import com.catalog.dto.CategoryDTO;
 import com.catalog.services.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -15,9 +16,10 @@ import java.util.List;
 public class CategoryResource {
 
     private final CategoryService categoryService;
+
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-        List<Category> list = categoryService.findAll();
-        return ResponseEntity.ok().body(list);
+    @ResponseStatus(HttpStatus.OK)
+    public List<CategoryDTO> findAll() {
+        return categoryService.findAll();
     }
 }
