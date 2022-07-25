@@ -3,12 +3,14 @@ package com.catalog.services;
 import com.catalog.dto.CategoryDTO;
 import com.catalog.entities.Category;
 import com.catalog.repositories.CategoryRepository;
+import com.catalog.services.exceptions.DatabaseException;
 import com.catalog.services.exceptions.ResourceNotFoundException;
 import com.catalog.services.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -43,5 +45,15 @@ public class CategoryService {
         category.setId(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found")).getId());
         category = categoryRepository.save(category);
         return categoryMapper.toDTO(category);
+    }
+    
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException("Entity not found");
+        } catch (DataIntegrityViolationException exception) {
+            throw new DatabaseException("Integrity violation");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.catalog.resources.exceptions;
 
+import com.catalog.services.exceptions.DatabaseException;
 import com.catalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,17 @@ public class ResourceExceptionHandler {
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database(DatabaseException exception, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Database exception");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
 }
