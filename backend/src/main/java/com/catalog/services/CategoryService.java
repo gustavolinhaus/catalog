@@ -9,9 +9,10 @@ import com.catalog.services.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +22,8 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll() {
-        List<Category> categories = categoryRepository.findAll();
-        return categoryMapper.toDTOs(categories);
+    public Page<CategoryDTO> findAllPaged(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(categoryMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +46,7 @@ public class CategoryService {
         category = categoryRepository.save(category);
         return categoryMapper.toDTO(category);
     }
-    
+
     public void delete(Long id) {
         try {
             categoryRepository.deleteById(id);
