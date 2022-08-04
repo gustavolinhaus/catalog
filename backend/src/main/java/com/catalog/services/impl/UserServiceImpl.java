@@ -2,6 +2,7 @@ package com.catalog.services.impl;
 
 import com.catalog.dto.UserDTO;
 import com.catalog.dto.UserInsertDTO;
+import com.catalog.dto.UserUpdateDTO;
 import com.catalog.entities.User;
 import com.catalog.repositories.UserRepository;
 import com.catalog.services.UserService;
@@ -45,9 +46,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO userDTO) {
-        userDTO.setId(id);
-        User user = userMapper.toEntity(userDTO);
+    public UserDTO update(Long id, UserUpdateDTO userUpdateDTO) {
+        userUpdateDTO.setId(id);
+        User user = userMapper.toEntity(userUpdateDTO);
         user.setPassword(userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found")).getPassword());
         user = userRepository.save(user);
         return userMapper.toDTO(user);

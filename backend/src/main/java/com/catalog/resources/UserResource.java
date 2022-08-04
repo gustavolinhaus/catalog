@@ -2,6 +2,7 @@ package com.catalog.resources;
 
 import com.catalog.dto.UserDTO;
 import com.catalog.dto.UserInsertDTO;
+import com.catalog.dto.UserUpdateDTO;
 import com.catalog.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,8 +47,8 @@ public class UserResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
-        return ResponseEntity.ok().body(userService.update(id, userDTO));
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        return ResponseEntity.ok().body(userService.update(id, userUpdateDTO));
     }
 
     @DeleteMapping("/{id}")
