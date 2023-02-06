@@ -1,7 +1,9 @@
 package com.catalog.entities;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +23,8 @@ import java.util.Set;
 @Table(name = "tb_product")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
